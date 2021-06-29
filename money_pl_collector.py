@@ -13,7 +13,7 @@ source: https://www.money.pl/gielda/spolki-gpw/
 
 import requests
 from bs4 import BeautifulSoup
-from os import listdir, getcwd, chdir, walk
+from os import listdir, getcwd, chdir, walk, path
 from openpyxl import Workbook
 from time import gmtime, strftime
 
@@ -23,6 +23,8 @@ class Data:
                        "Obrót (szt.)", "Obrót (PLN)", "Czas_aktualizacji", "Data"]
     header_eng = ["Value", "Rate (PLN)", "Change (%)", "Opening", "Min", "Max",
                   "Turnover (pcs.)", "Turnover (PLN)", "Update_time", "Date"]
+
+    header = header_oryginal
 
 class WSE_Data_Collector(Data):
 
@@ -66,34 +68,40 @@ class XLS_Creator(Data):
 
     def __init__(self, row):
         self.row = {}
-        self.current_date =  strftime("%Y-%m-%d", gmtime())
+        self.current_date = strftime("%Y-%m-%d", gmtime())
 
         for i in range(9):
-            self.row[self.header_oryginal[i]] = row[i]
+            self.row[self.header[i]] = row[i]
 
         self.time_corrector()
 
-    def create_xls_file(self, columns, title = "Arkusz 1"):
+        self.create_xls_file(row)
+
+    def create_xls_file(self, row, title = "Arkusz 1"):
         wb = Workbook()
         ws = wb.active
-
         ws.title = title
+        columns = ['A', 'B', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
 
-        for column in range(len(columns)):
-            ws.column_dimensions[columns[column]].width = 80
-        ws.append(('Lokalizacja folderu docelowego:', getcwd()))
-        ws.append(('-----------------', '-----------------'))
-        ws.append(('Plik:', ('Folder: ' + '> > >')))
-        #ws.cell(row=3, column=max(bufor_column)+1, value='Pełny adres:')
+        if path.isfile("/xls_files/{}.xls".format(row[0])):
+            pass
+        else:
+            for column_nr in range(len(row)):
+                ws.column_dimensions[columns[column_nr]].width = 20
 
+            ws.append([column_name for column_name in self.header])
+            ws.append([column_value for column_value in row])
+
+            wb.save("/xls_files/{}.xls".format(row[0]))
+            wb.close()
 
 
     def time_corrector(self):
-        if ":" in self.row["{}".format(self.header_oryginal[8])]:  # Czas_aktualizacji / Update_time
-            self.row["{}".format(self.header_oryginal[9])] = self.current_date # Data / Date
+        if ":" in self.row["{}".format(self.header[8])]:  # Czas_aktualizacji / Update_time
+            self.row["{}".format(self.header[9])] = self.current_date # Data / Date
         else:
-            self.row["{}".format(self.header_oryginal[9])] = self.row["{}".format(self.header_oryginal[8])]
-            self.row["{}".format(self.header_oryginal[8])] = "—"
+            self.row["{}".format(self.header[9])] = self.row["{}".format(self.header[8])]
+            self.row["{}".format(self.header[8])] = "—"
 
 
 
