@@ -88,8 +88,8 @@ class XLS_Creator(Data):
 
         columns = ['A', 'B', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
 
-        if path.isfile("{}.xls".format(row[0])):
-            wb = load_workbook(filename="{}.xls".format(row[0]))
+        if path.isfile("{}.xlsx".format(row[0])):
+            wb = load_workbook(filename="{}.xlsx".format(row[0]))
             ws = wb.active
             ws.append([column_value for column_value in row])
         else:
@@ -102,7 +102,7 @@ class XLS_Creator(Data):
             ws.append([column_name for column_name in self.header])
             ws.append([column_value for column_value in row])
 
-        wb.save("{}.xls".format(row[0]))
+        wb.save("{}.xlsx".format(row[0]))
         wb.close()
         chdir("..")
 
