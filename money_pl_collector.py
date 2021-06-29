@@ -13,7 +13,7 @@ source: https://www.money.pl/gielda/spolki-gpw/
 
 import requests
 from bs4 import BeautifulSoup
-from os import listdir, getcwd, chdir, walk, path
+from os import chdir, path
 from openpyxl import Workbook, load_workbook
 from time import gmtime, strftime
 
