@@ -14,7 +14,7 @@ source: https://www.money.pl/gielda/spolki-gpw/
 import requests
 from bs4 import BeautifulSoup
 from os import listdir, getcwd, chdir, walk, path
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 from time import gmtime, strftime
 
 class Data:
@@ -75,26 +75,36 @@ class XLS_Creator(Data):
 
         self.time_corrector()
 
+        row.append(self.row["{}".format(self.header[9])])
         self.create_xls_file(row)
 
     def create_xls_file(self, row, title = "Arkusz 1"):
-        wb = Workbook()
-        ws = wb.active
-        ws.title = title
+
+        if "/" in row[0]:
+            row[0] = row[0].replace("/", "_")  # id / in company name
+
+
+        chdir("xls_files")
+
         columns = ['A', 'B', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
 
-        if path.isfile("/xls_files/{}.xls".format(row[0])):
-            pass
+        if path.isfile("{}.xls".format(row[0])):
+            wb = load_workbook(filename="{}.xls".format(row[0]))
+            ws = wb.active
+            ws.append([column_value for column_value in row])
         else:
+            wb = Workbook()
+            ws = wb.active
+            ws.title = title
             for column_nr in range(len(row)):
                 ws.column_dimensions[columns[column_nr]].width = 20
 
             ws.append([column_name for column_name in self.header])
             ws.append([column_value for column_value in row])
 
-            wb.save("/xls_files/{}.xls".format(row[0]))
-            wb.close()
-
+        wb.save("{}.xls".format(row[0]))
+        wb.close()
+        chdir("..")
 
     def time_corrector(self):
         if ":" in self.row["{}".format(self.header[8])]:  # Czas_aktualizacji / Update_time
@@ -102,7 +112,6 @@ class XLS_Creator(Data):
         else:
             self.row["{}".format(self.header[9])] = self.row["{}".format(self.header[8])]
             self.row["{}".format(self.header[8])] = "—"
-
 
 
 #-----------------------------------------------------------------------------------------------------------------------
