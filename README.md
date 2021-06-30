@@ -16,3 +16,7 @@ description: This script collects data from Warsaw Stock Exchange (WSE) --- Gie≈
 source: https://www.money.pl/gielda/spolki-gpw/
 
 ______________________________________
+
+File: **money_pl_collector_sql.py ** version 1.0
+
+description: script not finished
