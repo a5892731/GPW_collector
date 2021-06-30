@@ -7,8 +7,7 @@ actualization date: 2021-06-30
 version: 1.0
 
 description: This script collects data from Warsaw Stock Exchange (WSE) --- Giełda Papierów Wartościowych w Warszawie (GPW)
-             and saves it in Firm_Name.xlsx file in xls_files folder, for each company in WSE.
-             If file is not exist then create it and add a data row, else just add row.
+             and saves it in swe_database.
 source: https://www.money.pl/gielda/spolki-gpw/
 
 '''
@@ -66,7 +65,7 @@ class WSE_Data_Collector(Data):
 
         return table
 
-class XLS_Creator(Data):
+class SQL_Creator(Data):
 
     def __init__(self, row):
         self.row = {}
@@ -78,35 +77,7 @@ class XLS_Creator(Data):
         self.time_corrector()
 
         row.append(self.row["{}".format(self.header[9])])
-        self.create_xls_file(row)
 
-    def create_xls_file(self, row, title = "Arkusz 1"):
-
-        if "/" in row[0]:
-            row[0] = row[0].replace("/", "_")  # change not allowed sign / in company name if exists
-
-
-        chdir("xls_files")
-
-        columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-
-        if path.isfile("{}.xlsx".format(row[0])):
-            wb = load_workbook(filename="{}.xlsx".format(row[0]))
-            ws = wb.active
-            ws.append([column_value for column_value in row])
-        else:
-            wb = Workbook()
-            ws = wb.active
-            ws.title = title
-            for column_nr in range(len(row)):
-                ws.column_dimensions[columns[column_nr]].width = 20
-
-            ws.append([column_name for column_name in self.header])
-            ws.append([column_value for column_value in row])
-
-        wb.save("{}.xlsx".format(row[0]))
-        wb.close()
-        chdir("..")
 
     def time_corrector(self):
         if ":" in self.row["{}".format(self.header[8])]:  # Czas_aktualizacji / Update_time
@@ -121,7 +92,4 @@ class XLS_Creator(Data):
 if __name__ == "__main__":
 
     GPW = WSE_Data_Collector()
-    for row in GPW.table:
-        data_storage = XLS_Creator(row)
-        print(data_storage.row)
 
