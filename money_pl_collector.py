@@ -83,7 +83,7 @@ class XLS_Creator(Data):
     def create_xls_file(self, row, title = "Arkusz 1"):
 
         if "/" in row[0]:
-            row[0] = row[0].replace("/", "_")  # id / in company name
+            row[0] = row[0].replace("/", "_")  # change not allowed sign / in company name if exists
 
 
         chdir("xls_files")
