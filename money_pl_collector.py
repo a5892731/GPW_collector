@@ -3,10 +3,12 @@
 
 author: a5892731
 date: 2021-06-29
-actualization date: 2021-06-29
+actualization date: 2021-06-30
 version: 1.0
 
-description: this script collects data from Warsaw Stock Exchange (WSE) --- Giełda Papierów Wartościowych w Warszawie (GPW)
+description: This script collects data from Warsaw Stock Exchange (WSE) --- Giełda Papierów Wartościowych w Warszawie (GPW)
+             and saves it in Firm_Name.xlsx file in xls_files folder, for each company in WSE.
+             If file is not exist then create it and add a data row, else just add row.
 source: https://www.money.pl/gielda/spolki-gpw/
 
 '''
@@ -86,7 +88,7 @@ class XLS_Creator(Data):
 
         chdir("xls_files")
 
-        columns = ['A', 'B', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K']
+        columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 
         if path.isfile("{}.xlsx".format(row[0])):
             wb = load_workbook(filename="{}.xlsx".format(row[0]))
