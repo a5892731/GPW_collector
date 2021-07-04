@@ -73,9 +73,6 @@ class DBdata:  # <-------------------------------------------DATA FOR DATABASE--
             print(">>> " + "Error! Try again")
             self.password_verify()
 
-    def __del__(self):
-        print(">>> " + "Connection data deleted")
-
 #-----------------------------------------------------------------------------------------------------------------------
 
 class DatabaseBuilder:
@@ -112,8 +109,6 @@ class DatabaseBuilder:
             else:
                 self.status = f"The error '{e}' occurred"
 
-    def __del__(self):
-        print(">>> " + "Database data deleted")
 
 if __name__ == "__main__":
     print(">>> " + "db_builder is starting")
@@ -126,6 +121,6 @@ if __name__ == "__main__":
 
     connection = db.create_connection_to_server()
     print(">>> " + db.status)
-    create_database_query = "CREATE DATABASE {}".format(connection_data.db_name)
+    create_database_query = "CREATE DATABASE {} CHARSET=utf8".format(connection_data.db_name)
     db.create_database(connection, create_database_query)
     print(">>> " + db.status)
