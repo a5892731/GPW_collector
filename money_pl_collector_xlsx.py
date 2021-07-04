@@ -1,9 +1,9 @@
-#!/bin/python3
+#!/usr/bin/python3
 '''
 
 author: a5892731
 date: 2021-06-29
-actualization date: 2021-06-30
+actualization date: 2021-07-04
 version: 1.0
 
 description: This script collects data from Warsaw Stock Exchange (WSE) --- Giełda Papierów Wartościowych w Warszawie (GPW)
