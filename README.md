@@ -17,6 +17,14 @@ source: https://www.money.pl/gielda/spolki-gpw/
 
 ______________________________________
 
+File: **wse_db_builder** version 1.0
+
+description: this is script that builds database named _WSE_database_
+
+______________________________________
+
 File: **money_pl_collector_sql.py ** version 1.0
 
-description: script not finished
+description: This script collects data from Warsaw Stock Exchange (WSE) --- Giełda Papierów Wartościowych w Warszawie (GPW)
+             and saves it in _WSE_database_. 
+             This required previouse creation of a database by **wse_db_builder** script
